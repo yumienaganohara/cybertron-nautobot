@@ -1,0 +1,200 @@
+---
+- name: Create a manufacturer
+  networktocode.nautobot.manufacturer:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    name: "{{item.name}}"
+    state: present
+  loop: "{{manufacturers}}"
+
+- name: Create device type
+  networktocode.nautobot.device_type:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    manufacturer: "{{item.manufacturer}}"
+    model: "{{item.model}}"
+    u_height: "{{item.u_height}}"
+    is_full_depth: false
+    state: present
+  loop: "{{device_types}}"
+
+- name: Create platform
+  networktocode.nautobot.platform:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    name: "{{item.name}}"
+    manufacturer: "{{item.manufacturer}}"
+    network_driver: "{{item.network_driver}}"
+    napalm_driver: "{{item.napalm_driver}}"
+    state: present
+  loop: "{{platforms}}"
+
+- name: Create software version
+  networktocode.nautobot.software_version:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    platform: "{{item.platform}}"
+    version: "{{item.version}}"
+    status: Active
+    state: present
+  loop: "{{software_versions}}"
+  register: software_version_results
+
+- name: Create device
+  networktocode.nautobot.device:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    name: "{{item.name}}"
+    role: "{{item.role}}"
+    location: "{{item.location}}"
+    device_type: "{{item.device_type}}"
+    platform: "{{item.platform | default(omit)}}"
+    status: Active
+    state: present
+  loop: "{{devices}}"
+  register: device_results
+
+- name: Merge device and software_version ID pairs
+  set_fact:
+    software_assignments: >-
+      {{
+        software_assignments | default([]) +
+        [ {
+          "device_id": (
+            device_results.results
+            | selectattr('item.name', 'equalto', item.name)
+            | map(attribute='device.id')
+            | list
+            | first
+          ),
+          "software_version_id": (
+            software_version_results.results
+            | selectattr('item.version', 'equalto', item.software_version)
+            | map(attribute='software_version.id')
+            | list
+            | first
+          )
+        } ]
+      }}
+  loop: "{{ devices }}"
+  when: item.software_version is defined
+
+- name: Update device software_version via Nautobot API
+  uri:
+    url: "{{ nb_url }}/api/dcim/devices/{{ item.device_id }}/"
+    method: PATCH
+    headers:
+      Authorization: "Token {{ nb_token }}"
+      Content-Type: "application/json"
+    body: |
+      {
+        "software_version": "{{ item.software_version_id }}"
+      }
+    body_format: json
+    validate_certs: false
+    status_code: 200
+  loop: "{{ software_assignments }}"
+  when: item.device_id is not none and item.software_version_id is not none
+
+- name: Create interfaces for device 
+  networktocode.nautobot.device_interface:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    device: "{{item.0.name}}"
+    name: "{{item.1.name}}"
+    type: "{{item.1.type}}"
+    mode: "{{item.1.mode | default(omit)}}"
+    mgmt_only: "{% if item.1.ipv4_address is defined and '192.168.149.' in item.1.ipv4_address %}true{% else %}false{% endif %}"
+    enabled: True
+    status: Active
+    state: present
+  loop: "{{devices | subelements('interfaces', 'skip_missing=True')}}"
+
+- name: Add IPv4
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    ip_address:
+      address: "{{item.1.ipv4_address}}"
+    interface:
+      name: "{{item.1.name}}"
+      device: "{{item.0.name}}"   
+  loop: "{{devices | subelements('interfaces', 'skip_missing = True')}}"
+  when: item.1.ipv4_address is defined
+
+- name: Add IPv6
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    ip_address:
+      address: "{{item.1.ipv6_address}}"
+    interface:
+      name: "{{item.1.name}}"
+      device: "{{item.0.name}}" 
+  loop: "{{devices | subelements('interfaces', 'skip_missing = True')}}"
+  when: item.1.ipv6_address is defined
+
+- name: Assign primary IPv4
+  networktocode.nautobot.device:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    name: "{{item.name}}"
+    primary_ip4: "{{item.primary_ip4}}"
+    status: Active
+    state: present
+  loop: "{{devices}}"
+
+- name: Create cable in Nautobot
+  networktocode.nautobot.cable:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    termination_a_type: dcim.interface
+    termination_a:
+      device: "{{ item.0.name }}"
+      name: "{{ item.1.name }}"
+    termination_b_type: dcim.interface
+    termination_b:
+      device: "{{ item.1.z_device }}"
+      name: "{{ item.1.z_interface }}"
+    status: Connected
+    state: present
+  loop: "{{ devices | subelements('interfaces', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item.0.name }} -> {{ item.1.name }}"
+  when: item.1.z_interface is defined
+  register: cable_result
+  failed_when: >
+    cable_result.failed and
+    ('already has a cable attached' not in (cable_result.msg | default('')) and
+     'cable dcim.interface' not in (cable_result.msg | default('')))
+
+- name: Update interfaces for each device with custom field attributes
+  networktocode.nautobot.device_interface:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    device: "{{ item.0.name }}"
+    name: "{{ item.1.name }}"
+    type: "{{ item.1.type }}"
+    mode: "{{ item.1.mode | default(omit) }}"
+    enabled: True
+    custom_fields:
+      ospf_area: "{{ item.1.ospf_area | string if item.1.ospf_area is defined else omit }}"
+      ospf_network_type: "{{ item.1.ospf_network_type | default(omit) }}"
+      mpls_enabled: "{{ item.1.mpls_enabled | default(omit) }}"
+    status: Active
+    state: present
+  loop: "{{ devices | subelements('interfaces', 'skip_missing=True') }}"
+  when: item.1.ospf_area is defined or item.1.ospf_network_type is defined or item.1.mpls_enabled is defined
+
+

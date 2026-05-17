@@ -1,0 +1,332 @@
+---
+bgp:
+  - device: P1
+    id: e1d836aa-1135-4cca-9d7a-01af0f0a6851
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.0.254.5
+        peer_asn: 65000
+        description: IPV4-BACKBONE-RR
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:254::5
+        peer_asn: 65000
+        description: IPV6-BACKBONE-RR
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: P2
+    id: cb749283-0d14-48d3-bd21-ece9a75751db
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.0.254.5
+        peer_asn: 65000
+        description: IPV4-BACKBONE-RR
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:254::5
+        peer_asn: 65000
+        description: IPV6-BACKBONE-RR
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: P3
+    id: 91746477-4d4b-4e52-9cfe-32daaf67b70e
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.0.254.5
+        peer_asn: 65000
+        description: IPV4-BACKBONE-RR
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:254::5
+        peer_asn: 65000
+        description: IPV6-BACKBONE-RR
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: P4
+    id: 96a48a4d-7d74-472c-b89d-1583fb7030c2
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.0.254.5
+        peer_asn: 65000
+        description: IPV4-BACKBONE-RR
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:254::5
+        peer_asn: 65000
+        description: IPV6-BACKBONE-RR
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: PE1
+    id: 93b26335-0f78-409e-b919-90a6c70f99f8
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.0.254.5
+        peer_asn: 65000
+        description: IPV4-BACKBONE-RR
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:254::5
+        peer_asn: 65000
+        description: IPV6-BACKBONE-RR
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+      - peer_address: 100.0.111.2
+        peer_asn: 65100
+        description: IPV4-CE1
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:111::2
+        peer_asn: 65100
+        description: IPV6-CE1
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: PE2
+    id: f5a513a6-8b19-47d9-838d-b2deb780d90e
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.0.254.5
+        peer_asn: 65000
+        description: IPV4-BACKBONE-RR
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:254::5
+        peer_asn: 65000
+        description: IPV6-BACKBONE-RR
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+      - peer_address: 100.0.222.2
+        peer_asn: 65200
+        description: IPV4-CE2
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:222::2
+        peer_asn: 65200
+        description: IPV6-CE2
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: PE3
+    id: cf8006df-6344-4125-a046-c74f60a3ef65
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.0.254.5
+        peer_asn: 65000
+        description: IPV4-BACKBONE-RR
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:100:254::5
+        peer_asn: 65000
+        description: IPV6-BACKBONE-RR
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: CE1
+    id: 61adb8c9-163b-4959-992d-17bd34a47509
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.1.11.2
+        peer_asn: 65101
+        description: WEST_SPINE01_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:101:11::2
+        peer_asn: 65101
+        description: WEST_SPINE01_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+      - peer_address: 100.1.12.2
+        peer_asn: 65101
+        description: WEST_SPINE02_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:101:12::2
+        peer_asn: 65101
+        description: WEST_SPINE02_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: CE2
+    id: 5bfaabda-c29f-49e6-9339-8e4d4852a659
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.2.21.2
+        peer_asn: 65201
+        description: EAST_SPINE01_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:202:21::2
+        peer_asn: 65201
+        description: EAST_SPINE01_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+      - peer_address: 100.2.22.2
+        peer_asn: 65201
+        description: EAST_SPINE02_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:202:22::2
+        peer_asn: 65201
+        description: EAST_SPINE02_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: WS1
+    id: 823a03da-0b48-454b-883e-6e0a116b9d24
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.1.101.2
+        peer_asn: 65102
+        description: WEST_LEAF01_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:101:101::2
+        peer_asn: 65102
+        description: WEST_LEAF01_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+      - peer_address: 100.1.102.2
+        peer_asn: 65102
+        description: WEST_LEAF02_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:101:102::2
+        peer_asn: 65102
+        description: WEST_LEAF02_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: WS2
+    id: 96dfa13f-4430-432b-9572-8ae2da534dd4
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.1.201.2
+        peer_asn: 65102
+        description: WEST_LEAF01_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:101:201::2
+        peer_asn: 65102
+        description: WEST_LEAF01_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+      - peer_address: 100.1.202.2
+        peer_asn: 65102
+        description: WEST_LEAF02_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:101:202::2
+        peer_asn: 65102
+        description: EAST_LEAF02_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: ES1
+    id: 62a8174e-6727-484a-ad37-a180bcc4628d
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.2.101.2
+        peer_asn: 65202
+        description: EAST_LEAF01_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:202:101::2
+        peer_asn: 65202
+        description: EAST_LEAF01_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+      - peer_address: 100.2.102.2
+        peer_asn: 65202
+        description: EAST_LEAF02_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:202:102::2
+        peer_asn: 65202
+        description: EAST_LEAF02_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+  - device: ES2
+    id: f9e4c174-e05d-4109-92db-a136c495a3d1
+    afi_safi:
+      - afi: ipv4_unicast
+      - afi: ipv6_unicast
+    bgp_peers:
+      - peer_address: 100.2.201.2
+        peer_asn: 65202
+        description: EAST_LEAF01_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:202:201::2
+        peer_asn: 65202
+        description: EAST_LEAF01_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT
+      - peer_address: 100.2.202.2
+        peer_asn: 65202
+        description: EAST_LEAF02_V4
+        afi: ipv4_unicast
+        in_route_map: ALLOW_ALL_V4_IN
+        out_route_map: ALLOW_ALL_V4_OUT
+      - peer_address: 2001:db8:202:202::2
+        peer_asn: 65202
+        description: WEST_LEAF02_V6
+        afi: ipv6_unicast
+        in_route_map: ALLOW_ALL_V6_IN
+        out_route_map: ALLOW_ALL_V6_OUT

@@ -1,0 +1,3 @@
+- name: Build Containerlab Topology
+  import_tasks: clab_topo.yml
+  tags: [clab]

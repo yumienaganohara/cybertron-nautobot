@@ -1,0 +1,8 @@
+---
+- name: "NAUTOBOT ANSIBLE REGRESSION - ISSUES AND BUGS"
+  include_tasks:
+    file: "issues_and_bugs.yml"
+
+- name: "NAUTOBOT ANSIBLE REGRESSION - CHECK MODE"
+  include_tasks:
+    file: "check_mode.yml"

@@ -1,0 +1,36 @@
+interface {{interface.name}}
+{%if interface.description | length > 1%}
+ desc {{interface.description}}
+{%else%}
+ desc Loopback Interface
+{%endif%}
+
+{%set lb_addrs = interfce.ip_addresses | selectattr("address", "defined") | list%}
+{%if lb_addrs | length > 0%}
+{%for addr in lb_addrs%}
+{%if '.' in addr%} 
+ ip address {{addr["address"] | ansible.utils.ipaddr('address')}} {{addr["address"] | ansible.utils.ipaddr('netmask')}}
+{%else%}
+ ipv6 address {{ addr["address"] }}
+{%endif%}
+{%endfor%}
+
+{%if 'ospf' in config_context and interface['cf_ospf_area'] is not none%}
+{%set ospf = config_context['ospf']%}
+{%if 'ipv4' in ospf%}
+ ip ospf {{ospf['ipv4']['process-id']}} area {{interface['cf_ospf_area']}}
+{%if interface['cf_ospf_network_type'] is not none%} 
+ ip ospf network {{interface['cf_ospf_network_type']}}
+{%endif%}
+{%endif%}
+{%if 'ipv6' in ospf%}
+ ipv6 ospf {{ospf['ipv6']['process-id']}} area {{interface['cf_ospf_area']}}
+{%endif%}
+{%endif%}
+{%else%}
+ no ip address
+{%endif%}
+{%if interface.enabled == false%}
+ shutdown
+{%endif%}
+!

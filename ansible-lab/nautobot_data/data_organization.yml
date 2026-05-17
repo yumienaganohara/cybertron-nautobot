@@ -1,0 +1,68 @@
+location_types:
+  - name: Lab
+    content_type:
+      - circuits.circuittermination
+      - dcim.controller
+      - dcim.device
+      - dcim.module
+      - dcim.powerpanel
+      - dcim.rack
+      - dcim.rackgroup
+      - ipam.namespace
+      - ipam.prefix
+      - ipam.vlan
+      - ipam.vlangroup
+      - virtualization.cluster
+
+locations:
+  - name: Cybertron
+    location_type: Lab
+  - name: East DataCenter
+    description: "Data Center on the East side of the topology"
+    location_type: Lab
+    parent: Cybertron
+  - name: West DataCenter
+    description: "Data Center on the West side of the topology"
+    location_type: Lab
+    parent: Cybertron
+  - name: Backbone
+    description: "Backbone of the topology"
+    location_type: Lab
+    parent: Cybertron
+
+nb_roles:
+  - name: DataCenter Spine
+    color: 98C379
+    content_types: 
+      - dcim.device
+      - virtualization.virtualmachine
+  - name: DataCenter Leaf
+    color: 61AFEF
+    content_types: 
+      - dcim.device
+      - virtualization.virtualmachine
+  - name: Customer Edge Router
+    color: C678DD
+    content_types: 
+      - dcim.device
+      - virtualization.virtualmachine
+  - name: Provider Edge Router
+    color: E5C07B
+    content_types: 
+      - dcim.device
+      - virtualization.virtualmachine
+  - name: Provider Router
+    color: D19A66
+    content_types: 
+      - dcim.device
+      - virtualization.virtualmachine
+  - name: Provider Route Reflector
+    color: E06C75
+    content_types: 
+      - dcim.device
+      - virtualization.virtualmachine
+  - name: MGMT Switch
+    color: 475569
+    content_types: 
+      - dcim.device
+      - virtualization.virtualmachine

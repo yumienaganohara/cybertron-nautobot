@@ -1,0 +1,62 @@
+! Startup-config last modified at Tue May 12 02:14:57 2026 by root
+! device: WL1 (cEOSLab, EOS-4.34.0F-41641815.4340F (engineering build))
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$kF0gRf9gsD6yxdJ6$xlMJaKlhdRrP1h0ZlFG8.csLzsZx5gVMc6kPi.JO8iC4Zs7nHaqKaNfaKyjD7Zz40UCmNpd3XbDbP6WakAy6D0
+!
+management api http-commands
+   protocol http
+   no shutdown
+   !
+   vrf mgmt-clab
+      no shutdown
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname WL1
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+vrf instance mgmt-clab
+   description mgmt-clab
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+interface Ethernet1
+!
+interface Ethernet2
+!
+interface Ethernet3
+!
+interface Ethernet4
+!
+interface Management0
+   vrf mgmt-clab
+   ip address 192.168.149.16/24
+!
+ip routing
+ip routing vrf mgmt-clab
+!
+ip route vrf mgmt-clab 0.0.0.0/0 Management0 192.168.149.1
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+end

@@ -1,0 +1,55 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+
+name: cybertron
+mgmt:
+	network: mgmt-clab 
+	ipv4-subnet: 192.168.149.0/24
+
+topology:
+  nodes:
+{%for dev in nautobot_devices["data"]["devices"]%}
+	{%if dev.platform is not none and  dev.software_version is not none%}
+		{%set model = dev.device_type.model | lower%}
+		{%if "ceos" in model%}
+			{%set kind = "ceos"%}
+			{%set image = kind ~ ':' ~ dev.software_version.version%}
+		{%else%}
+			{% set kind = (dev.device_type.manufacturer.name ~ "_" ~ dev.device_type.model) | lower%}
+			{%set image_base = "vrnetlab/" ~ kind%}
+			{%set image = image_base ~ ":" ~ dev.software_version.version%}
+		{%endif%}
+		{{dev.name}}:
+			kind: {{kind}}
+			image: {{image}}
+			mgmt-ipv4: {{dev.primary_ip4.address | ansible.utils.ipaddr('address')}}
+			{%if "ceos" in model%}
+			startup-config: ~/labs/startup-configs/{{ dev.name }}.txt
+			{%endif%}
+			env:
+				HOSTNAME: {{dev.name}}
+	{%endif%}
+{%endfor%}
+
+	links:
+{%set namespace = {'traversed': []}%}
+{%for dev in nautobot_devices["data"]["devices"]%}
+	{%if dev.platform is not none and dev.software_version is not none%}
+		{%for int in dev.interfaces%}
+			{%if int.connected_interface%}
+				{%set local = dev.name ~ ':' ~ int.name%}
+				{%set remote = int.connected_interface.device.name ~ ':' ~ int.connected_interface.name%}
+				{%set endpoints = [local, remote] | sort%}
+				{%if endpoints not in namespace.traversed%}
+					- endpoints: ["{{endpoints[0]}}", "{{endpoints[1]}}"]
+					{%set _ = namespace.traversed.append(endpoints)%}
+				{%endif%}
+			{%endif%}
+		{%endfor%}
+	{%endif%}
+{%endfor%}
+
+
+
+
+
+

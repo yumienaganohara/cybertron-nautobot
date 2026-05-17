@@ -1,0 +1,166 @@
+
+name: cybertron
+mgmt:
+  network: mgmt-clab 
+  ipv4-subnet: 192.168.149.0/24
+
+topology:
+  nodes:
+    CE1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.10
+      env:
+        HOSTNAME: CE1
+    CE2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.11
+      env:
+        HOSTNAME: CE2
+    EL1:
+      kind: ceos
+      image: ceos:4.34.0F
+      mgmt-ipv4: 192.168.149.18
+      startup-config: ~/labs/startup-configs/EL1.txt
+      env:
+        HOSTNAME: EL1
+    EL2:
+      kind: ceos
+      image: ceos:4.34.0F
+      mgmt-ipv4: 192.168.149.19
+      startup-config: ~/labs/startup-configs/EL2.txt
+      env:
+        HOSTNAME: EL2
+    ES1:
+      kind: ceos
+      image: ceos:4.34.0F
+      mgmt-ipv4: 192.168.149.14
+      startup-config: ~/labs/startup-configs/ES1.txt
+      env:
+        HOSTNAME: ES1
+    ES2:
+      kind: ceos
+      image: ceos:4.34.0F
+      mgmt-ipv4: 192.168.149.15
+      startup-config: ~/labs/startup-configs/ES2.txt
+      env:
+        HOSTNAME: ES2
+    P1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.2
+      env:
+        HOSTNAME: P1
+    P2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.3
+      env:
+        HOSTNAME: P2
+    P3:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.4
+      env:
+        HOSTNAME: P3
+    P4:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.5
+      env:
+        HOSTNAME: P4
+    PE1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.6
+      env:
+        HOSTNAME: PE1
+    PE2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.7
+      env:
+        HOSTNAME: PE2
+    PE3:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.8
+      env:
+        HOSTNAME: PE3
+    RR1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.12.01
+      mgmt-ipv4: 192.168.149.9
+      env:
+        HOSTNAME: RR1
+    WL1:
+      kind: ceos
+      image: ceos:4.34.0F
+      mgmt-ipv4: 192.168.149.16
+      startup-config: ~/labs/startup-configs/WL1.txt
+      env:
+        HOSTNAME: WL1
+    WL2:
+      kind: ceos
+      image: ceos:4.34.0F
+      mgmt-ipv4: 192.168.149.17
+      startup-config: ~/labs/startup-configs/WL2.txt
+      env:
+        HOSTNAME: WL2
+    WS1:
+      kind: ceos
+      image: ceos:4.34.0F
+      mgmt-ipv4: 192.168.149.12
+      startup-config: ~/labs/startup-configs/WS1.txt
+      env:
+        HOSTNAME: WS1
+    WS2:
+      kind: ceos
+      image: ceos:4.34.0F
+      mgmt-ipv4: 192.168.149.13
+      startup-config: ~/labs/startup-configs/WS2.txt
+      env:
+        HOSTNAME: WS2
+
+  links:
+          - endpoints: ["CE1:Ethernet0/1", "WS1:eth7"]
+          - endpoints: ["CE1:Ethernet0/2", "WS2:eth7"]
+          - endpoints: ["CE1:Ethernet1/0", "PE1:Ethernet0/1"]
+          - endpoints: ["CE2:Ethernet0/1", "ES1:eth7"]
+          - endpoints: ["CE2:Ethernet0/2", "ES2:eth7"]
+          - endpoints: ["CE2:Ethernet1/0", "PE2:Ethernet0/1"]
+          - endpoints: ["EL1:eth1", "ES1:eth1"]
+          - endpoints: ["EL1:eth2", "ES2:eth2"]
+          - endpoints: ["EL1:eth3", "WS2:eth3"]
+          - endpoints: ["EL1:eth4", "WS2:eth4"]
+          - endpoints: ["EL2:eth1", "ES2:eth1"]
+          - endpoints: ["EL2:eth2", "ES1:eth2"]
+          - endpoints: ["EL2:eth3", "WS1:eth3"]
+          - endpoints: ["EL2:eth4", "WS1:eth4"]
+          - endpoints: ["ES1:eth3", "WL2:eth3"]
+          - endpoints: ["ES1:eth4", "WL2:eth4"]
+          - endpoints: ["ES2:eth3", "WL1:eth3"]
+          - endpoints: ["ES2:eth4", "WL1:eth4"]
+          - endpoints: ["P1:Ethernet0/1", "P2:Ethernet0/1"]
+          - endpoints: ["P1:Ethernet0/2", "P3:Ethernet0/2"]
+          - endpoints: ["P1:Ethernet0/3", "PE1:Ethernet1/0"]
+          - endpoints: ["P1:Ethernet1/0", "RR1:Ethernet0/1"]
+          - endpoints: ["P2:Ethernet0/2", "P4:Ethernet0/2"]
+          - endpoints: ["P2:Ethernet0/3", "PE2:Ethernet1/0"]
+          - endpoints: ["P2:Ethernet1/0", "RR1:Ethernet0/2"]
+          - endpoints: ["P3:Ethernet0/1", "P4:Ethernet0/1"]
+          - endpoints: ["P3:Ethernet0/3", "PE1:Ethernet1/1"]
+          - endpoints: ["P3:Ethernet1/0", "PE3:Ethernet0/1"]
+          - endpoints: ["P4:Ethernet0/3", "PE2:Ethernet1/1"]
+          - endpoints: ["P4:Ethernet1/0", "PE3:Ethernet0/2"]
+          - endpoints: ["WL1:eth1", "WS1:eth1"]
+          - endpoints: ["WL1:eth2", "WS2:eth2"]
+          - endpoints: ["WL2:eth1", "WS2:eth1"]
+          - endpoints: ["WL2:eth2", "WS1:eth2"]
+
+
+
+
+
+

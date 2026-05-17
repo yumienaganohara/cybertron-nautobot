@@ -1,0 +1,60 @@
+---
+- name: Using GraphQL to get data from Nautobot
+  networktocode.nautobot.query_graphql:
+    url: "{{ nb_url }}"
+    token: "{{ nb_token }}"
+    validate_certs: false
+    query: |
+      {
+        devices {
+          name
+          
+          device_type {
+            model  
+            manufacturer {
+              name
+            } 
+          }
+          
+          platform {
+            name
+          }
+          
+          software_version {
+            version
+          }
+          
+          primary_ip4 {
+            address
+            host
+          }
+          
+          interfaces {
+            name
+            ip_addresses {
+              address
+            }
+            connected_interface {
+              name
+              device {
+                name
+              }
+            }
+            mgmt_only
+          }
+        }
+      }
+    
+  register: "nautobot_devices"
+
+- name: Initial configuration for Arista cEOS
+  template: 
+    src: "ceos_ini_config.j2"
+    dest: "~/labs/startup-configs/{{item.name}}.txt"
+  loop: "{{nautobot_devices.data.devices}}"
+  when: item.device_type.model == "ceos"
+
+- name: Run Containerlab
+  template:
+    src: "clab_topo.j2"
+    dest: "~/labs/cybertron-topology.clab.yml"

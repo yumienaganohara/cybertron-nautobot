@@ -1,0 +1,18 @@
+_metadata:
+  name: OSPF Configuration Context
+  description: OSPF configs for all devices
+  weight: 100
+  is_active: true
+  roles:
+  - name: "Provider Router"
+  - name: "Provider Edge Router"
+  - name: "Provider Route Reflector"
+ospf:
+  ipv4:
+    process_id: 1
+    passive_interfaces:
+    - Loopback0
+  ipv6:
+    process_id: 1
+    passive_interfaces:
+    - Loopback0

@@ -1,0 +1,61 @@
+---
+- name: Create a namespace
+  networktocode.nautobot.namespace:
+    url: "{{nb_url}}"
+    token: "{{nb_token}}"
+    validate_certs: false
+    name: "{{item.name}}"
+    description: "{{item.description | default(omit)}}"
+    state: present
+  loop: "{{namespaces}}"
+
+- name: Create vrf
+  networktocode.nautobot.vrf:
+    url: "{{nb_url}}"
+    token: "{{nb_token}}"
+    validate_certs: false
+    name: "{{item.name}}"
+    rd: "{{item.rd}}"
+    namespace: "{{item.namespace | default(omit)}}"
+    description: "{{item.description | default(omit)}}"
+    state: present
+  loop: "{{vrfs}}"
+
+- name: Create prefixes
+  networktocode.nautobot.prefix:
+    url: "{{nb_url}}"
+    token: "{{nb_token}}"
+    validate_certs: false
+    prefix: "{{item.prefix}}"
+    namespace: "{{item.namespace | default(omit)}}"
+    status: Active
+    state: present
+  loop: "{{prefixes}}"
+
+- name: Create IP Addresses
+  networktocode.nautobot.ip_address:
+    url: "{{nb_url}}"
+    token: "{{nb_token}}"
+    validate_certs: false
+    address: "{{item.address}}"
+    namespace: "{{item.namespace | default(omit)}}"
+    status: Active
+    state: present
+  loop: "{{ip_addresses}}"
+
+- name: Assign Loopback IPs
+  networktocode.nautobot.ip_address:
+    url: "{{nb_url}}"
+    token: "{{nb_token}}"
+    validate_certs: false
+    address: "{{item.address}}"
+    namespace: "{{item.namespace | default(omit)}}"
+    status: Active
+    role: "Loopback"
+    state: present
+  loop: "{{ip_addresses}}"
+  when: "'/32' in item.address or '/128' in item.address"
+    
+
+
+    

@@ -1,0 +1,51 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{% if item.device_type.model == "ceos" %}
+no aaa root
+!
+username admin privilege 15 role network-admin secret 0 admin
+!
+management api http-commands
+   vrf mgmt-clab
+      no shutdown
+   protocol http
+   protocol https
+   no shutdown
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+vrf instance mgmt-clab
+   description mgmt-clab
+!
+hostname {{ item.name }}
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+{% for int in item.interfaces if int.mgmt_only == true %}
+interface {{ int.name}}
+ vrf forwarding mgmt-clab
+ ip address {{ int.ip_addresses[0].address }}
+!
+{% endfor %}
+!
+ip routing
+!
+ip routing vrf mgmt-clab
+!
+{% for int in item.interfaces if int.mgmt_only == true %}
+ip route vrf mgmt-clab 0.0.0.0 0.0.0.0 {{ int.name }} 192.168.149.1
+{% endfor %}
+{% endif %}

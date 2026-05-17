@@ -1,0 +1,56 @@
+{%if interface["enabled"] == true and 'Ethernet' in interface["name"] and interface["mgmt_only"] == false%}
+interface {{interface["name"]["split"]('.')[0]}}
+{%if interface["connected_interface"] is defined and interface["connected_interface"] and interface["connected_interface"]["device"] is defined and interface["connected_interface"]["device"]["name"] is defined%}
+ description To {{interface["connected_interface"]}}-{{interface["connected_interface"]["device"]["name"]}}
+{%endif%}
+{%if interface["ip_addresses"] | length > 0%}
+{%for addr in interface["ip_addresses"]%}
+{%if addr["address"] is defined%}
+{%if '.' in addr["address"]%}
+ ip address {{addr["address"] | ansible.utils.ipaddr('address')}} {{addr["address"] | ansible.utils.ipaddr('netmask')}}
+{%else%}
+ ipv6 enable
+ ipv6 address {{addr["address"]}}
+{%endif%}
+{%endif%}
+{%endfor%}
+{%endif%}
+
+{%if 'ospf' in config_context and interface['cf_ospf_area'] is not none%}
+{%set ospf = config_context['ospf']%}
+{%if 'ipv4' in ospf%}
+ ip ospf {{ospf['ipv4']['process-id']}} area {{interface['cf_ospf_area']}}
+{%if interface['cf_ospf_network_type'] is not none%} 
+ ip ospf network {{interface['cf_ospf_network_type']}}
+{%endif%}
+{%endif%}
+{%if 'ipv6' in ospf%}
+ ipv6 ospf {{ospf['ipv6']['process-id']}} area {{interface['cf_ospf_area']}}
+{%endif%}
+{%endif%}
+{%if interface["cf_mpls_enabled" == true]%}
+ mpls ip
+{%endif%}
+ no shutdown
+!
+{%elif interface["mgmt_only"] == true%}
+interface {{interface["name"]}}
+ description Management Interface
+ vrf forwarding mgmt-clab
+{%if interface["ip_addresses"] | length > 0%}
+{%for addr in interface["ip_addresses"]%}
+{%if addr["address"] is defined%}
+ ip address {{addr["address"] | ansible.utils.ipaddr('address')}} {{addr["address"]}}
+ no cdp enable
+ no shutdown
+!
+{%endif%}
+{%endfor%}
+{%endif%}
+{%else%}
+interface {{interface["name"]}}
+ shutdown
+!
+{%endif%}
+
+

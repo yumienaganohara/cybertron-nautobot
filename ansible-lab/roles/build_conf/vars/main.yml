@@ -1,0 +1,159 @@
+query_string: |
+  query {
+    device(id: "{{id}}") {
+      hostname: name
+      config_context
+      position
+      serial
+      
+      role {
+        name
+      }
+      tenant {
+        name
+      }
+      tags {
+        name
+      }
+      platform {
+        name
+        network_driver
+        napalm_driver
+        manufacturer {
+          name
+        }
+      }
+      
+      primary_ip4 {
+        id
+        primary_ip4_for {
+          id
+          name
+        }
+      }
+      location {
+        name
+        vlans {
+          name
+          vid
+          vlan_group {
+            name
+          }
+        }
+        parent {
+          name
+          vlans {
+            name
+            vid
+            vlan_group {
+              name
+            }
+          }
+        }
+      }
+
+      bgp_routing_instances {
+        extra_attributes
+        autonomous_system {
+          asn
+        }
+        address_families {
+          afi_safi
+          extra_attributes
+        }
+        peer_groups {
+          name
+          source_interface {
+            name
+          }
+          autonomous_system {
+            asn
+          }
+          extra_attributes
+          secret {
+            name
+          }
+          address_families {
+            import_policy
+            export_policy
+            extra_attributes
+            afi_safi
+          }
+          peergroup_template {
+            autonomous_system {
+              asn
+            }
+            extra_attributes
+          }
+        }
+        endpoints {
+          peer_group {
+            name
+          }
+          source_ip {
+            address
+          }
+          source_interface {
+            name
+          }
+          description
+          peer {
+            description          
+            source_ip {
+              address
+            }
+            address_families {
+              afi_safi
+              import_policy
+              export_policy
+            }
+            autonomous_system {
+              asn
+            }
+            routing_instance {
+              autonomous_system {
+                asn
+              }
+            }
+          }
+        }
+      }
+
+      interfaces {
+        name
+        description
+        mac_address
+        enabled
+        mgmt_only
+        label
+        mode
+        cf_ospf_network_type
+        cf_ospf_area
+        cf_mpls_enabled
+        lag {
+          name
+        }
+        ip_addresses {
+          address
+          tags {
+            id
+          }
+        }
+        tagged_vlans {
+          vid
+        }
+        untagged_vlan {
+          vid
+        }
+        connected_interface {
+          name
+          device {
+            name
+          }
+        }
+        tags {
+          id
+        }
+
+    }
+  }

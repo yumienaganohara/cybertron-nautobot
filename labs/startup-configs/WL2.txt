@@ -1,0 +1,44 @@
+no aaa root
+!
+username admin privilege 15 role network-admin secret 0 admin
+!
+management api http-commands
+   vrf mgmt-clab
+      no shutdown
+   protocol http
+   protocol https
+   no shutdown
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+vrf instance mgmt-clab
+   description mgmt-clab
+!
+hostname WL2
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+interface Management0
+ vrf forwarding mgmt-clab
+ ip address 192.168.149.17/24
+!
+!
+ip routing
+!
+ip routing vrf mgmt-clab
+!
+ip route vrf mgmt-clab 0.0.0.0 0.0.0.0 Management0 192.168.149.1

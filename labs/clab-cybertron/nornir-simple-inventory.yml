@@ -1,0 +1,91 @@
+---
+EL1:
+    username: admin
+    password: admin
+    platform: ceos
+    hostname: 192.168.149.18
+EL2:
+    username: admin
+    password: admin
+    platform: ceos
+    hostname: 192.168.149.19
+ES1:
+    username: admin
+    password: admin
+    platform: ceos
+    hostname: 192.168.149.14
+ES2:
+    username: admin
+    password: admin
+    platform: ceos
+    hostname: 192.168.149.15
+WL1:
+    username: admin
+    password: admin
+    platform: ceos
+    hostname: 192.168.149.16
+WL2:
+    username: admin
+    password: admin
+    platform: ceos
+    hostname: 192.168.149.17
+WS1:
+    username: admin
+    password: admin
+    platform: ceos
+    hostname: 192.168.149.12
+WS2:
+    username: admin
+    password: admin
+    platform: ceos
+    hostname: 192.168.149.13
+CE1:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.10
+CE2:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.11
+P1:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.2
+P2:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.3
+P3:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.4
+P4:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.5
+PE1:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.6
+PE2:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.7
+PE3:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.8
+RR1:
+    username: admin
+    password: admin
+    platform: cisco_iol
+    hostname: 192.168.149.9

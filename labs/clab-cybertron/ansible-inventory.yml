@@ -1,0 +1,55 @@
+all:
+  vars:
+    # The generated inventory is assumed to be used from the clab host.
+    # Hence no http proxy should be used. Therefore we make sure the http
+    # module does not attempt using any global http proxy.
+    ansible_httpapi_use_proxy: false
+  children:
+    ceos:
+      vars:
+        # ansible_connection: set ansible_connection variable if required
+        ansible_user: admin
+        ansible_password: admin
+      hosts:
+        clab-cybertron-EL1:
+          ansible_host: 192.168.149.18
+        clab-cybertron-EL2:
+          ansible_host: 192.168.149.19
+        clab-cybertron-ES1:
+          ansible_host: 192.168.149.14
+        clab-cybertron-ES2:
+          ansible_host: 192.168.149.15
+        clab-cybertron-WL1:
+          ansible_host: 192.168.149.16
+        clab-cybertron-WL2:
+          ansible_host: 192.168.149.17
+        clab-cybertron-WS1:
+          ansible_host: 192.168.149.12
+        clab-cybertron-WS2:
+          ansible_host: 192.168.149.13
+    cisco_iol:
+      vars:
+        # ansible_connection: set ansible_connection variable if required
+        ansible_user: admin
+        ansible_password: admin
+      hosts:
+        clab-cybertron-CE1:
+          ansible_host: 192.168.149.10
+        clab-cybertron-CE2:
+          ansible_host: 192.168.149.11
+        clab-cybertron-P1:
+          ansible_host: 192.168.149.2
+        clab-cybertron-P2:
+          ansible_host: 192.168.149.3
+        clab-cybertron-P3:
+          ansible_host: 192.168.149.4
+        clab-cybertron-P4:
+          ansible_host: 192.168.149.5
+        clab-cybertron-PE1:
+          ansible_host: 192.168.149.6
+        clab-cybertron-PE2:
+          ansible_host: 192.168.149.7
+        clab-cybertron-PE3:
+          ansible_host: 192.168.149.8
+        clab-cybertron-RR1:
+          ansible_host: 192.168.149.9
